@@ -43,7 +43,6 @@ class handle {
         let results, filename;
         filename = path.basename(file.path);
         if (fs.existsSync(TEMP_DIR + filename)) {
-            console.log(2222);
             fs.readFile(TEMP_DIR + filename, function (err, data) {
                 if (err) {
                     console.log('Read file error!\n', err)
@@ -88,6 +87,7 @@ let Handle = new handle();
 
 // Plugin level function (dealing with files)
 function gulpPrefixer(parameter) {
+    parameter.cache = parameter.cache || true;
     AUTH_TOKEN = new Buffer('api:' + parameter.key).toString('base64');
     if (!parameter.key) {
         throw PluginError(PLUGIN_NAME, "Missing prefix text!");
