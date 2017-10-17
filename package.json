@@ -1,6 +1,6 @@
 {
   "name": "gulp-tinypng-plugin",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "gulp plugin to compress png images using tinypng api",
   "main": "index.js",
   "repository": "ZhelinCheng/gulp-tinypng-plugin",

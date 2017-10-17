@@ -5,10 +5,10 @@
 
 ## Install
 
-Install with [npm](https://npmjs.org/package/gulp-tinypng)
+Install with [npm](https://npmjs.org/package/gulp-tinypng-plugin)
 
 ```
-npm install --save-dev gulp-tinypng
+npm install --save-dev gulp-tinypng-plugin
 ```
 
 
