@@ -1,6 +1,6 @@
 {
   "name": "gulp-tinypng-plugin",
-  "version": "0.1.2",
+  "version": "1.0.2",
   "description": "gulp plugin to compress png images using tinypng api",
   "main": "index.js",
   "repository": "ZhelinCheng/gulp-tinypng-plugin",
@@ -15,7 +15,6 @@
     "email": "i@zhelin.me",
     "url": "http://zhelin.me"
   },
-    
   "bugs": {
     "url": "https://github.com/ZhelinCheng/gulp-tinypng-plugin/issues"
   },
@@ -36,13 +35,13 @@
   },
   "license": "MIT",
   "dependencies": {
-    "gulp-util": "~2.2.14",
-    "gulp": "~3.3.4",
-    "event-stream": "~3.1.0",
-    "request": "~2.31.0",
-    "vinyl": "~0.2.3",
-    "mkdirp": "~0.3.5",
-    "rmdir": "~1.0.4",
-    "through2": "~0.4.1"
+    "event-stream": "^3.1.7",
+    "gulp": "^3.3.4",
+    "gulp-util": "^2.2.20",
+    "mkdirp": "^0.3.5",
+    "request": "^2.31.0",
+    "rmdir": "^1.0.4",
+    "through2": "^0.4.2",
+    "vinyl": "^0.2.3"
   }
 }

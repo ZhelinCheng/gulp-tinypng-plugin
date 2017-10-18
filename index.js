@@ -69,13 +69,13 @@ class handle {
                         Handle.download(results.output.url, filename, function () {
                             fs.readFile(TEMP_DIR + filename, function (err, data) {
                                 if (err) {
-                                    gutil.log('[error] :  gulp-tinypng - ', err);
+                                    gutil.log('[error] :  '+ PLUGIN_NAME +' - ', err);
                                 }
                                 cb(data);
                             });
                         });
                     } else {
-                        gutil.log('[error] : gulp-tinypng - ', results.message);
+                        gutil.log('[error] : '+ PLUGIN_NAME +' - ', results.message);
                     }
                 }
             });
@@ -108,7 +108,7 @@ function gulpPrefixer(parameter) {
             Handle.tinypng(file, function (data) {
                 file.contents = data;
                 this.push(file);
-                gutil.log('gulp-tingpng: [compressing]', gutil.colors.green('✔ ') + file.relative + gutil.colors.gray(' (done)'));
+                gutil.log(PLUGIN_NAME + ': [compressing]', gutil.colors.green('✔ ') + file.relative + gutil.colors.gray(' (done)'));
                 return callback();
             }.bind(this));
         }
