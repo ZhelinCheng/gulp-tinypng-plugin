@@ -63,21 +63,25 @@ class handle {
                 },
                 body: file.contents
             }, (error, response, body) => {
-                if (!error) {
-                    results = JSON.parse(body);
-                    if (results.output && results.output.url) {
-                        Handle.download(results.output.url, filename, function () {
-                            fs.readFile(TEMP_DIR + filename, function (err, data) {
-                                if (err) {
-                                    gutil.log('[error] :  ' + PLUGIN_NAME + ' - ', err);
-                                }
-                                cb(data);
-                            });
-                        });
-                    } else {
-                        gutil.log('[error] : ' + PLUGIN_NAME + ' - ', results.message);
-                    }
+                if (error) {
+                    gutil.log('[error] : ' + PLUGIN_NAME + ': \n', error);
+                    return;
                 }
+
+                results = JSON.parse(body);
+                if (results.output && results.output.url) {
+                    Handle.download(results.output.url, filename, function () {
+                        fs.readFile(TEMP_DIR + filename, function (err, data) {
+                            if (err) {
+                                gutil.log('[error] :  ' + PLUGIN_NAME + ' - ', err);
+                            }
+                            cb(data);
+                        });
+                    });
+                } else {
+                    gutil.log('[error] : ' + PLUGIN_NAME + ' - ', results.message);
+                }
+                
             });
         }
     }
