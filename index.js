@@ -16,7 +16,7 @@ const PLUGIN_NAME = 'gulp-tinypng-plugin';
 const TEMP_DIR = '.gulp/tinypng/';
 
 class handle {
-    cleanTemp () {
+    cleanTemp() {
         rmdir('.gulp/tinypng', (err, dirs, files) => {
             mkdirp('.gulp/tinypng', (err) => {
                 if (err) {
@@ -26,12 +26,12 @@ class handle {
         });
     }
 
-    download (uri, filename, complete) {
+    download(uri, filename, complete) {
         request.head(uri, (err, res, body) => {
             request({
-                url: uri,
-                strictSSL: false
-            })
+                    url: uri,
+                    strictSSL: false
+                })
                 .pipe(fs.createWriteStream(TEMP_DIR + filename))
                 .on('close', function () {
                     complete();
@@ -62,24 +62,31 @@ class handle {
                     'Authorization': 'Basic ' + AUTH_TOKEN
                 },
                 body: file.contents
-            },  (error, response, body) => {
+            }, (error, response, body) => {
                 if (!error) {
                     results = JSON.parse(body);
                     if (results.output && results.output.url) {
                         Handle.download(results.output.url, filename, function () {
                             fs.readFile(TEMP_DIR + filename, function (err, data) {
                                 if (err) {
-                                    gutil.log('[error] :  '+ PLUGIN_NAME +' - ', err);
+                                    gutil.log('[error] :  ' + PLUGIN_NAME + ' - ', err);
                                 }
                                 cb(data);
                             });
                         });
                     } else {
-                        gutil.log('[error] : '+ PLUGIN_NAME +' - ', results.message);
+                        gutil.log('[error] : ' + PLUGIN_NAME + ' - ', results.message);
                     }
                 }
             });
         }
+    }
+
+    RandomNum(Min, Max) {
+        let Range = Max - Min;
+        let Rand = Math.random();
+        let num = Min + Math.floor(Rand * Range);
+        return num;
     }
 }
 
@@ -88,13 +95,18 @@ let Handle = new handle();
 // Plugin level function (dealing with files)
 function gulpPrefixer(parameter) {
     parameter.cache = parameter.cache || true;
+
+    if (parameter.key instanceof Object) {
+        parameter.key = parameter.key[Handle.RandomNum(0, parameter.key.length)]
+    }
+
     AUTH_TOKEN = new Buffer('api:' + parameter.key).toString('base64');
     if (!parameter.key) {
         throw PluginError(PLUGIN_NAME, "Missing prefix text!");
     }
     parameter.key = new Buffer(parameter.key); // allocate ahead of time
 
-    if(!fs.existsSync(TEMP_DIR) || !parameter.cache){
+    if (!fs.existsSync(TEMP_DIR) || !parameter.cache) {
         Handle.cleanTemp()
     }
     // Creating a stream through which each file will pass

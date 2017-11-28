@@ -21,7 +21,8 @@ var tinypng = require('gulp-tinypng');
 gulp.task('tinypng', function () {
 	gulp.src('src/**/*.png')
 		.pipe(tinypng({
-            key : 'API_KEY'
+            //key : 'API_KEY'
+            key : ['API_KEY1', 'API_KEY2'，'...']
             cache : true
         }))
 		.pipe(gulp.dest('compressed_images'));
@@ -33,7 +34,7 @@ gulp.task('tinypng', function () {
 
 ### tinypng(options)
 
-`key`: API_KEY
+`key`: API_KEY(String || Array)
 
 `cache`: Open cache
 
