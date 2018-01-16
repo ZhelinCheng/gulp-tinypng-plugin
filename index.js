@@ -1,21 +1,19 @@
-// through2 is a thin wrapper around node transform streams
+'use strict';
 const through = require('through2');
 const gutil = require('gulp-util');
 const mkdirp = require('mkdirp');
 const rmdir = require('rmdir');
 const request = require('request');
 const path = require('path');
-const inspect = require('util').inspect;
+//const inspect = require('util').inspect;
 const fs = require('fs');
-
 const PluginError = gutil.PluginError;
 let AUTH_TOKEN;
 
-// Consts
 const PLUGIN_NAME = 'gulp-tinypng-plugin';
 const TEMP_DIR = '.gulp/tinypng/';
 
-class handle {
+class Handle {
     cleanTemp() {
         rmdir('.gulp/tinypng', (err, dirs, files) => {
             mkdirp('.gulp/tinypng', (err) => {
@@ -29,9 +27,9 @@ class handle {
     download(uri, filename, complete) {
         request.head(uri, (err, res, body) => {
             request({
-                    url: uri,
-                    strictSSL: false
-                })
+                url: uri,
+                strictSSL: false
+            })
                 .pipe(fs.createWriteStream(TEMP_DIR + filename))
                 .on('close', function () {
                     complete();
@@ -45,7 +43,7 @@ class handle {
         if (fs.existsSync(TEMP_DIR + filename)) {
             fs.readFile(TEMP_DIR + filename, function (err, data) {
                 if (err) {
-                    console.log('Read file error!\n', err)
+                    console.log('Read file error!\n', err);
                     return false;
                 }
                 cb(data);
@@ -70,7 +68,7 @@ class handle {
 
                 results = JSON.parse(body);
                 if (results.output && results.output.url) {
-                    Handle.download(results.output.url, filename, function () {
+                    handle.download(results.output.url, filename, function () {
                         fs.readFile(TEMP_DIR + filename, function (err, data) {
                             if (err) {
                                 gutil.log('[error] :  ' + PLUGIN_NAME + ' - ', err);
@@ -81,7 +79,7 @@ class handle {
                 } else {
                     gutil.log('[error] : ' + PLUGIN_NAME + ' - ', results.message);
                 }
-                
+
             });
         }
     }
@@ -94,14 +92,14 @@ class handle {
     }
 }
 
-let Handle = new handle();
+let handle = new Handle();
 
 // Plugin level function (dealing with files)
 function gulpPrefixer(parameter) {
     parameter.cache = parameter.cache || true;
 
     if (parameter.key instanceof Object) {
-        parameter.key = parameter.key[Handle.RandomNum(0, parameter.key.length)]
+        parameter.key = parameter.key[handle.RandomNum(0, parameter.key.length)]
     }
 
     AUTH_TOKEN = new Buffer('api:' + parameter.key).toString('base64');
@@ -111,7 +109,7 @@ function gulpPrefixer(parameter) {
     parameter.key = new Buffer(parameter.key); // allocate ahead of time
 
     if (!fs.existsSync(TEMP_DIR) || !parameter.cache) {
-        Handle.cleanTemp()
+        handle.cleanTemp()
     }
     // Creating a stream through which each file will pass
     let stream = through.obj(function (file, enc, callback) {
@@ -121,7 +119,7 @@ function gulpPrefixer(parameter) {
         }
 
         if (file.isBuffer()) {
-            Handle.tinypng(file, function (data) {
+            handle.tinypng(file, function (data) {
                 file.contents = data;
                 this.push(file);
                 gutil.log(PLUGIN_NAME + ': [compressing]', gutil.colors.green('✔ ') + file.relative + gutil.colors.gray(' (done)'));
@@ -134,9 +132,8 @@ function gulpPrefixer(parameter) {
             return callback();
         }
     });
-
     // returning the file stream
     return stream;
-};
+}
 
 module.exports = gulpPrefixer;

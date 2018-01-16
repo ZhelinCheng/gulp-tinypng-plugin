@@ -1,7 +1,7 @@
 {
   "name": "gulp-tinypng-plugin",
-  "version": "1.0.5",
-  "description": "gulp plugin to compress png images using tinypng api",
+  "version": "1.0.7",
+  "description": "tinypng图片压缩工具，支持多个Key，支持已压缩图片缓存。gulp plugin to compress png images using tinypng api",
   "main": "index.js",
   "repository": "ZhelinCheng/gulp-tinypng-plugin",
   "scripts": {
@@ -13,7 +13,7 @@
   "author": {
     "name": "ZhelinCheng",
     "email": "i@zhelin.me",
-    "url": "http://zhelin.me"
+    "url": "https://zhelin.me"
   },
   "bugs": {
     "url": "https://github.com/ZhelinCheng/gulp-tinypng-plugin/issues"
